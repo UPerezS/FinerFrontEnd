@@ -32,10 +32,10 @@ const customSwal = Swal.mixin({
 })
 export class CursosInstructorComponent implements OnInit {
   readonly COURSE_STATUS = {
-    APPROVED: 'Aprobado',
-    REJECTED: 'Rechazada',
-    PENDING: 'Pendiente',
-    IN_REVIEW: 'En Revisión'
+    APPROVED: 'aprobado',
+    REJECTED: 'rechazada',
+    PENDING: 'pendiente',
+    IN_REVIEW: 'en revision'
   };
 
   constructor(
@@ -384,7 +384,7 @@ export class CursosInstructorComponent implements OnInit {
       imagen: this.editFormData.imagenUrl,
       idCategoria: idCategoria
     };
-    if (this.editFormData.estatus == 'Rechazada') {
+    if (this.editFormData.estatus == 'rechazada') {
       this.cursoService.editarCursoRechazado(cursoDataSolicitud).subscribe({
         next: (response) => {
           Swal.fire(

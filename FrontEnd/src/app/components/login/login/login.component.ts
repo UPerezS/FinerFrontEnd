@@ -48,7 +48,7 @@ export class LoginComponent {
           
           this.authService.sendVerificationToken(response.correo).subscribe({
             error: (err: any) => {
-              this.errorMensaje = 'Error al enviar el código de verificación. Intente nuevamente.';
+              //this.errorMensaje = 'Error al enviar el código de verificación. Intente nuevamente.';
             }
           });
         } else {

@@ -91,6 +91,27 @@ body {
   transition: all 0.3s;
   white-space: nowrap;
 }
+.send-review-btn {
+  background-color: #8EC3B0;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.send-review-btn:hover:not(:disabled) {
+  background-color: #6DA993;
+}
+
+.send-review-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .evaluacion-btn {
   background-color: #8EC3B0 !important; /* fuerza el color menta */
   color: white;
