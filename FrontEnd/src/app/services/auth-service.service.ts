@@ -28,7 +28,7 @@ export class AuthService {
 
   // Método para primer paso de autenticación
   loginStep1(username: string, password: string): Observable<any> {
-    return this.http.get<any>('/api/token/iniciar-sesion', {
+    return this.http.get<any>('http://localhost:8080/api/token/iniciar-sesion', {
       params: { nombreUsuario: username, contrasenia: password }
     }).pipe(
       tap((response: any) => {
@@ -41,15 +41,22 @@ export class AuthService {
   }
 
   // Método para verificar token
-  verifyToken(token: string): Observable<boolean> {
-    return this.http.get<boolean>('/api/token/comparar', {
+  verifyToken(token: string): Observable<any> {
+    console.log('Token a verificar:', token); // Verifica que el token no esté vacío y que sea correcto
+  
+    return this.http.get<any>('http://localhost:8080/api/token/comparar', {
       params: { token: token }
-    });
+    }).pipe(
+      tap(response => {
+        console.log('Respuesta del backend:', response); // Verifica la respuesta del backend
+      })
+    );
   }
-
+  
+  
   // Método para enviar token de verificación
   sendVerificationToken(email: string): Observable<any> {
-    return this.http.post('/api/token/enviar-token/inicioSesion', {
+    return this.http.post('http://localhost:8080/api/token/enviar-token/inicioSesion', {
       correoUsuario: email
     });
   }

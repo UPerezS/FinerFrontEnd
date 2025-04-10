@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { CONFIG } from '../config/config';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AlumnoDocumento, InstructorDocumento } from '../documentos/usuarioDocumento';
-import { Curso } from '../documentos/cursosDocumento';
 import { Router } from '@angular/router';
 
 @Injectable({
