@@ -152,6 +152,7 @@ export class CursoServiceService {
       })
     );
   }
+  
   // Método actualizado para editar tema según el nuevo controlador Spring
   editarSolicitudTema(solicitudTemaDTO: SolicitudTemaEditarDTO): Observable<any> {
     return this.http.put(
