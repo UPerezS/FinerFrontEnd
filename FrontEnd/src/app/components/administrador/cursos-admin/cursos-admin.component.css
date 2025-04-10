@@ -5,6 +5,29 @@
   padding: 20px;
 }
 
+/* Estilo para el mensaje de éxito */
+.mensaje-exito {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4CAF50; /* Color verde para éxito */
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: fadeInOut 5s ease-in-out;
+  max-width: 400px;
+}
+
+/* Animación para hacer que aparezca y desaparezca suavemente */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
 /* ====== Secciones generales ====== */
 .section {
   padding: 20px;
