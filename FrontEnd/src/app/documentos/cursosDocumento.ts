@@ -11,6 +11,7 @@ export interface Curso {
     instructor: string;
     categoria: string;
     cantidadTemas: string;
+    inscritos: Array<{ id: number }>;
 }
 
 export interface contenidoCurso{
@@ -52,3 +53,4 @@ export interface CursoCertificadoResumenDTO {
     fechaInscripcion: string;
     fechaGeneracion: string
 }
+
