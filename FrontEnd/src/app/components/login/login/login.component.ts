@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth-service.service';
 import { UsuariosService } from '../../../services/usuarios-service.service';
+
+interface LoginResponse {
+  idUsuario: number;
+  idRol: number;
+  correo: string;
+  [key: string]: any;
+}
 
 @Component({
   selector: 'app-login',
@@ -13,61 +21,106 @@ export class LoginComponent {
   errorMensaje: string = '';
   mostrarContrasena: boolean = false;
   isLoading: boolean = false;
+  
+  verificationStep: boolean = false;
+  verificationCode: string = '';
+  maskedEmail: string = '';
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private usuariosService: UsuariosService
-  ) {} 
+  ) {}
 
   toggleMostrarContrasena(): void {
     this.mostrarContrasena = !this.mostrarContrasena;
   }
-  
+
   iniciarSesion(): void {
     this.isLoading = true;
     this.errorMensaje = '';
     
-    this.usuariosService.iniciarSesion(this.nombreUsuario, this.contrasenia).subscribe({
-      next: (response) => {
-        console.log('Sesión iniciada con éxito:', response);
-        
-        // Guardar usuario completo en el servicio y localStorage
-        const userData = {
-          idUsuario: response.idUsuario,
-          idRol: response.idRol,
-          nombreUsuario: this.nombreUsuario,
-          // Puedes agregar más datos básicos si los devuelve el login
-        };
-        
-        this.usuariosService.setCurrentUser(userData);
-        
-        // Obtener datos completos del usuario según su rol
-        this.usuariosService.obtenerUsuarioPorId(response.idUsuario).subscribe({
-          next: (usuarioCompleto) => {
-            // Combinar datos básicos con los completos
-            const fullUserData = {
-              ...userData,
-              ...usuarioCompleto
-            };
-            
-            this.usuariosService.setCurrentUser(fullUserData);
-            
-            // Redireccionar según el rol
-            this.redirigirSegunRol(response.idRol);
-          },
-          error: (error) => {
-            console.error('Error al obtener datos del usuario:', error);
-            // Aun así redirigir con los datos básicos
-            this.redirigirSegunRol(response.idRol);
-          }
-        });
+    this.authService.loginStep1(this.nombreUsuario, this.contrasenia).subscribe({
+      next: (response: LoginResponse) => {
+        if (response.idUsuario) {
+          this.verificationStep = true;
+          this.maskedEmail = this.maskEmail(response.correo);
+          
+          this.authService.sendVerificationToken(response.correo).subscribe({
+            error: (err: any) => {
+              this.errorMensaje = 'Error al enviar el código de verificación. Intente nuevamente.';
+            }
+          });
+        } else {
+          this.errorMensaje = 'Usuario o contraseña incorrectos';
+        }
+        this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al iniciar sesión:', error);
         this.errorMensaje = error.error?.error || 'Error desconocido al iniciar sesión';
         this.isLoading = false;
       }
     });
+  }
+
+  verifyCode(): void {
+    if (!this.verificationCode || this.verificationCode.length !== 6) {
+      this.errorMensaje = 'Por favor ingresa un código válido de 6 dígitos';
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMensaje = '';
+
+    this.authService.verifyToken(this.verificationCode).subscribe({
+      next: (isValid: boolean) => {
+        if (isValid) {
+          this.authService.completeLogin();
+          
+          const tempUser = JSON.parse(localStorage.getItem('tempUserData') || '{}');
+          this.usuariosService.obtenerUsuarioPorId(tempUser.idUsuario).subscribe({
+            next: (usuarioCompleto: any) => {
+              const fullUserData = {
+                ...tempUser,
+                ...usuarioCompleto
+              };
+              this.usuariosService.setCurrentUser(fullUserData);
+              this.redirigirSegunRol(tempUser.idRol);
+            },
+            error: (error: any) => {
+              console.error('Error al obtener datos del usuario:', error);
+              this.redirigirSegunRol(tempUser.idRol);
+            }
+          });
+        } else {
+          this.errorMensaje = 'Código de verificación incorrecto';
+          this.isLoading = false;
+        }
+      },
+      error: (error: any) => {
+        this.errorMensaje = 'Error al verificar el código. Intente nuevamente.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  resendCode(): void {
+    const tempUser = JSON.parse(localStorage.getItem('tempUserData') || '{}');
+    if (tempUser.correo) {
+      this.isLoading = true;
+      this.errorMensaje = '';
+      
+      this.authService.sendVerificationToken(tempUser.correo).subscribe({
+        next: () => {
+          this.isLoading = false;
+        },
+        error: (err: any) => {
+          this.errorMensaje = 'Error al reenviar el código. Intente nuevamente.';
+          this.isLoading = false;
+        }
+      });
+    }
   }
 
   private redirigirSegunRol(idRol: number): void {
@@ -86,6 +139,15 @@ export class LoginComponent {
       default:
         this.errorMensaje = 'Rol no reconocido. Comunícate con soporte.';
     }
+  }
+
+  private maskEmail(email: string): string {
+    if (!email) return '';
+    const [name, domain] = email.split('@');
+    const maskedName = name.length > 2 
+      ? name.substring(0, 2) + '*'.repeat(name.length - 2)
+      : '*'.repeat(name.length);
+    return maskedName + '@' + domain;
   }
 
   navigateToRegister() {
