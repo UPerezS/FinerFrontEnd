@@ -64,21 +64,27 @@ export class LoginComponent {
     });
   }
 
-  verifyCode(): void {
+  verifyCode() {
     if (!this.verificationCode || this.verificationCode.length !== 6) {
       this.errorMensaje = 'Por favor ingresa un código válido de 6 dígitos';
       return;
     }
-
+  
     this.isLoading = true;
     this.errorMensaje = '';
-
+    const tempUser = JSON.parse(localStorage.getItem('tempUserData') || '{}');
+          console.log('Datos del usuario temporal:', tempUser);
+  
+    console.log('Verificando token:', this.verificationCode); // Verifica que el código se envíe correctamente
+  
     this.authService.verifyToken(this.verificationCode).subscribe({
-      next: (isValid: boolean) => {
-        if (isValid) {
+      next: (response: any) => {
+        console.log('Respuesta al verificar el token:', response); // Muestra la respuesta del backend
+        if (response.resultado) {
           this.authService.completeLogin();
           
-          const tempUser = JSON.parse(localStorage.getItem('tempUserData') || '{}');
+           // Verifica los datos del usuario temporal almacenados
+          
           this.usuariosService.obtenerUsuarioPorId(tempUser.idUsuario).subscribe({
             next: (usuarioCompleto: any) => {
               const fullUserData = {
@@ -99,11 +105,13 @@ export class LoginComponent {
         }
       },
       error: (error: any) => {
+        console.error('Error al verificar el token:', error); // Verifica el error recibido del servidor
         this.errorMensaje = 'Error al verificar el código. Intente nuevamente.';
         this.isLoading = false;
       }
     });
   }
+  
 
   resendCode(): void {
     const tempUser = JSON.parse(localStorage.getItem('tempUserData') || '{}');

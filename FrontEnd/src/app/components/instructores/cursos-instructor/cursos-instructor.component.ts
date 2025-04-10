@@ -864,27 +864,33 @@ removeOpcion(preguntaIndex: number, opcionIndex: number): void {
 
 crearEvaluacion(): void {
   this.isLoading = true;
-  console.log(this.nuevaEvaluacion)
-  
+  console.log(this.nuevaEvaluacion);
+
   this.evaluacionService.crearEvaluacion(this.nuevaEvaluacion).subscribe({
     next: (response) => {
       // Manejar respuesta exitosa (puede ser texto o JSON)
       let mensaje = 'Evaluación creada correctamente';
-      if (typeof response === 'string') {
+      
+      // Si la respuesta es un objeto, desestructuramos para eliminar el ID
+      if (typeof response === 'object') {
+        const { id, ...resto } = response; // Eliminar el ID, pero conservar el resto de la respuesta
+        mensaje = 'Evaluación creada correctamente';
+      } else if (typeof response === 'string') {
         mensaje = response;
       }
+
       Swal.fire('¡Éxito!', mensaje, 'success');
       this.closeEvaluacionModal();
     },
     error: (error) => {
       console.error('Error completo:', error);
-      
+
       let mensajeError = error.message;
       // Extraer solo el mensaje si es muy largo
       if (mensajeError.length > 150) {
         mensajeError = mensajeError.substring(0, 150) + '...';
       }
-      
+
       Swal.fire({
         title: 'Error al crear evaluación',
         html: `<div style="text-align: left;">
@@ -900,4 +906,5 @@ crearEvaluacion(): void {
     }
   });
 }
+
 }

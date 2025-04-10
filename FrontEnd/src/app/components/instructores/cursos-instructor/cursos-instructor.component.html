@@ -100,21 +100,7 @@ title="Gestionar Evaluación">
 <i class="fas fa-tasks"></i>
 </button>
 
-<!-- Botón Eliminar con ícono -->
-<button class="action-btn delete-btn" 
-[disabled]="shouldDisableDelete(curso)"
-(click)="confirmDelete(curso)"
-title="Eliminar curso">
-<i class="fas fa-trash-alt"></i>
-</button>
 
-                            </div>
-                        </div>
-                            </div>   
-                        </div>
-                    </div>
-                </div>
-            </div>
 
 <!-- Modal Vista Previa Mejorado -->
 <div *ngIf="showPreviewModal && selectedCourse" class="modal-overlay preview-modal-overlay">
