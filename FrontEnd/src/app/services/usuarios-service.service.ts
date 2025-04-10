@@ -50,6 +50,7 @@ export class UsuariosService {
 
   setCurrentUser(user: any) {
     localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.removeItem('tempUserData'); // Limpiar datos temporales
     this.currentUserSubject.next(user);
   }
 
