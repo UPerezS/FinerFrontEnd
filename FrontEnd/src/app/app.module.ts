@@ -32,6 +32,7 @@ import { PerfilInstructorComponent } from './components/instructores/perfil-inst
 import { LoginComponent } from './components/login/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import { RegistroComponent } from './components/login/registro/registro.component';
 
 
 @NgModule({
@@ -53,14 +54,14 @@ import { MatDialogModule } from '@angular/material/dialog';
     NavbarInicioComponent,
     ContactoComponent,
     CursosInstructorComponent,
-    NavbarAdminComponent,
     NavbarAlumnoComponent,
     CursosAlumnosComponent,
     DescripcionCursoAlumnoComponent,
     ContenidoCursoComponent,
     NavbarInstructorComponent,
     PerfilInstructorComponent,
-    LoginComponent
+    LoginComponent,
+    RegistroComponent
   ],
   imports: [
     BrowserModule,
@@ -75,10 +76,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
     provideHttpClient(withFetch()),
     CursoServiceService,
-    CategoriaServiceService,
-
-
-    provideHttpClient()
+    CategoriaServiceService
 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
