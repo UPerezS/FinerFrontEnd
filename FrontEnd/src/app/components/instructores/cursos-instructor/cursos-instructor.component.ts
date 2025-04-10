@@ -5,8 +5,8 @@ import { CursoEditarDTO, CursoVerDTO, VerCategoriasDTO, TemaDTO, SolicitudTemaEd
 import { CursoServiceService } from '../../../services/curso-service.service';
 import { CategoriaServiceService } from '../../../services/categorias-service.service';
 import { UsuariosService } from '../../../services/usuarios-service.service';
+import { Evaluacion, EvaluacionInstructorDTO } from '../../../documentos/evaluacionDocumento';
 import { EvaluacionService } from '../../../services/evaluacion.service';
-import { PreguntaDTO, EvaluacionInstructorDTO, OpcionDTO, Evaluacion } from '../../../documentos/evaluacionDocumento';
 
 const customSwal = Swal.mixin({
   customClass: {
@@ -32,10 +32,10 @@ const customSwal = Swal.mixin({
 })
 export class CursosInstructorComponent implements OnInit {
   readonly COURSE_STATUS = {
-    APPROVED: 'aprobado',
-    REJECTED: 'rechazada',
-    PENDING: 'pendiente',
-    IN_REVIEW: 'en revision'
+    APPROVED: 'Aprobado',
+    REJECTED: 'Rechazada',
+    PENDING: 'Pendiente',
+    IN_REVIEW: 'En Revisión'
   };
 
   constructor(
@@ -88,8 +88,6 @@ export class CursosInstructorComponent implements OnInit {
     categoria: '',
     nombreCategoriaActual: '',
     imagenUrl: ''
-
-    
   };
   categorias: VerCategoriasDTO[] = [];
   isEditing = false;
@@ -284,6 +282,7 @@ export class CursosInstructorComponent implements OnInit {
       }
     });
   }
+  
 
   closePreviewModal() {
     this.showPreviewModal = false;
@@ -491,6 +490,7 @@ export class CursosInstructorComponent implements OnInit {
     this.showDeleteModal = false;
     this.courseToDelete = null;
   }
+
 
   deleteCourse() {
     if (this.courseToDelete && this.usuario.idUsuario) {
@@ -764,9 +764,8 @@ export class CursosInstructorComponent implements OnInit {
       curso.estatus === this.COURSE_STATUS.PENDING) &&
       this.temasDelCurso.length > 0;
   }
-
-  // Agrega estas propiedades a la clase
-showEvaluacionModal = false;
+   // Agrega estas propiedades a la clase
+showEvaluacionModal = true;
 selectedCourseForEvaluacion: CursoVerDTO | null = null;
 existingEvaluacion: Evaluacion | null = null;
 
