@@ -1,3 +1,4 @@
+<app-navbar-inicio></app-navbar-inicio>
 <div class="login-container">
   <!-- Paso 1: Formulario de credenciales -->
   <div *ngIf="!verificationStep" class="login-form">
@@ -51,12 +52,7 @@
       </div>
     </form>
 
-    <div class="social-login">
-      <button class="btn-google" (click)="$event.preventDefault()">
-        <img src="assets/google-icon.svg" alt="Google logo" class="google-icon">
-        Continuar con Google
-      </button>
-    </div>
+  
 
     <div class="text-center register-section">
       <p class="register-text">¿No tienes una cuenta? 

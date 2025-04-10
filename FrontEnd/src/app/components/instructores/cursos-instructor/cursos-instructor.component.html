@@ -334,12 +334,12 @@ title="Gestionar Evaluación">
                 </button>
                 
                 <button *ngIf="canSendToReview(selectedCourseForTema)" 
-                        class="send-review-btn" 
-                        (click)="enviarARevision()"
-                        [disabled]="isLoading || temasDelCurso.length === 0"
-                        [title]="temasDelCurso.length === 0 ? 'Debes agregar al menos un tema' : ''">
-                    <i class="fas fa-paper-plane"></i> Enviar a Revisión
-                </button>
+                class="send-review-btn" 
+                (click)="enviarARevision()"
+                [disabled]="isLoading || temasDelCurso.length === 0"
+                [title]="temasDelCurso.length === 0 ? 'Debes agregar al menos un tema' : ''">
+            <i class="fas fa-paper-plane"></i> Enviar a Revisión
+        </button>
                 
                 <button class="action-btn close-btn" 
                         (click)="closeTemaModal()"
