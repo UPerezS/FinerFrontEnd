@@ -803,6 +803,32 @@ body {
     .action-btn {
       width: 100%;
     }
+    /* Agrega estos estilos a tu archivo CSS */
+.temas-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.tema-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tema-item h5 {
+  color: #4a6cf7;
+  margin-bottom: 5px;
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 10px;
+  color: #6c757d;
+}
   }
   
   @media (max-width: 480px) {
