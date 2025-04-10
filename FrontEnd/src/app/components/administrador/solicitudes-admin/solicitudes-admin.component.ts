@@ -187,29 +187,31 @@ export class SolicitudesAdminComponent implements OnInit {
   }
 
   aprobarCategoria(id: number) {
-    console.log('Aprobando categoría con id:', id);  // Verificar que el id es correcto
+    console.log('Aprobando categoría con id:', id);
     this.adminService.aprobarCategoria(id).subscribe({
       next: (response) => {
         console.log('Categoría aprobada:', response);
-        alert('Categoría aprobada con éxito');
+        this.mostrarMensajeTemporalmente('¡Categoría aprobada con éxito!');
+        this.obtenerSolicitudesCategorias(); // Actualizar la lista después de aprobar
       },
       error: (error) => {
         console.error('Error al aprobar categoría:', error);
-        alert('Hubo un error al aprobar la categoría');
+        this.mostrarMensajeTemporalmente('Hubo un error al aprobar la categoría. Por favor, inténtelo de nuevo.');
       }
     });
   }
   
   desaprobarCategoria(id: number) {
-    console.log('Desaprobando categoría con id:', id);  // Verificar que el id es correcto
+    console.log('Desaprobando categoría con id:', id);
     this.adminService.desaprobarCategoria(id).subscribe({
       next: (response) => {
         console.log('Categoría desaprobada:', response);
-        alert('Categoría desaprobada con éxito');
+        this.mostrarMensajeTemporalmente('Categoría desaprobada con éxito');
+        this.obtenerSolicitudesCategorias(); // Actualizar la lista después de desaprobar
       },
       error: (error) => {
         console.error('Error al desaprobar categoría:', error);
-        alert('Hubo un problema al desaprobar la categoría.');
+        this.mostrarMensajeTemporalmente('Hubo un problema al desaprobar la categoría. Por favor, inténtelo de nuevo.');
       }
     });
   }

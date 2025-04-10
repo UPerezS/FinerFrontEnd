@@ -4,7 +4,6 @@ import { CursosServiceService } from '../../../services/cursos-service';
 import { Curso } from '../../../documentos/cursosDocumento';
 import { ChangeDetectorRef } from '@angular/core';
 
-
 @Component({
   selector: 'app-cursos-admin',
   templateUrl: './cursos-admin.component.html',
@@ -15,6 +14,10 @@ export class CursosAdminComponent implements OnInit {
   cursos: Curso[] = [];
   categoriasAprobadas: any[] = [];
   cursosFiltrados: Curso[] = [];
+
+  // Variables para los mensajes de éxito
+  mensajeExito: string = '';
+  mostrarMensaje: boolean = false;
 
   //para rechazar un curso
   modalVisible: boolean = false;
@@ -36,7 +39,6 @@ export class CursosAdminComponent implements OnInit {
   // Nueva variable para controlar qué tema está expandido
   temaExpandido: number | null = null;
 
-
   constructor(
     private administradorService: AdministradorServiceService,
     private cursoService: CursosServiceService,
@@ -45,8 +47,19 @@ export class CursosAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerSolicitudesCursos();
-    this.obtenerCursosAprobados(); // Llamamos al nuevo método
+    this.obtenerCursosAprobados(); 
     this.obtenerCategoriasAprobadas();
+  }
+
+  // Método para mostrar mensaje temporalmente
+  mostrarMensajeTemporalmente(mensaje: string) {
+    this.mensajeExito = mensaje;
+    this.mostrarMensaje = true;
+    
+    // Ocultar el mensaje después de 5 segundos
+    setTimeout(() => {
+      this.mostrarMensaje = false;
+    }, 5000);
   }
 
   ngAfterViewInit(): void {
@@ -93,7 +106,6 @@ export class CursosAdminComponent implements OnInit {
     });
   }
 
-  // Nuevo método para alternar la visibilidad del contenido del tema
   toggleTemaContenido(index: number) {
     if (this.temaExpandido === index) {
       this.temaExpandido = null;
@@ -113,7 +125,7 @@ export class CursosAdminComponent implements OnInit {
       (data) => {
         console.log('Cursos cargados0', data)
         this.cursos = data;
-        this.cursosFiltrados = data; // Iniciamos con todos los cursos
+        this.cursosFiltrados = data; 
       },
       (error) => {
         console.error('Error al obtener los cursos aprobados', error);
@@ -141,14 +153,12 @@ export class CursosAdminComponent implements OnInit {
   filtrarCursos(): void {
     let cursosFiltrados = this.cursos;
 
-    // Filtrar por nombre de curso
     if (this.nombreCurso) {
       cursosFiltrados = cursosFiltrados.filter(curso =>
         curso.tituloCurso.toLowerCase().includes(this.nombreCurso.toLowerCase())
       );
     }
 
-    // Filtrar por categoría
     if (this.categoriaSeleccionada) {
       cursosFiltrados = cursosFiltrados.filter(curso =>
         curso.nombreCategoria.toLowerCase() === this.categoriaSeleccionada.toLowerCase()
@@ -177,7 +187,7 @@ export class CursosAdminComponent implements OnInit {
         }
       );
     } else {
-      this.cursosFiltrados = this.cursos; // Si no hay categoría, mostrar todos los cursos
+      this.cursosFiltrados = this.cursos;
     }
   }
 
@@ -186,10 +196,13 @@ export class CursosAdminComponent implements OnInit {
 
     this.administradorService.aprobarCurso(requestBody).subscribe(
       (response) => {
-        alert(response.mensaje);
+        // Reemplazamos el alert por el mensaje de éxito
+        this.mostrarMensajeTemporalmente(response.mensaje || '¡Curso aprobado con éxito!');
+        this.obtenerSolicitudesCursos(); // Actualizamos la lista
+        this.obtenerCursosAprobados(); // Actualizamos también los cursos aprobados
       },
       (error) => {
-        alert('Error al aprobar el curso');
+        this.mostrarMensajeTemporalmente('Error al aprobar el curso. Por favor, inténtelo de nuevo.');
         console.error(error);
       }
     );
@@ -197,7 +210,7 @@ export class CursosAdminComponent implements OnInit {
 
   rechazarCurso() {
     if (!this.cursoSeleccionado || !this.motivoRechazo.trim()) {
-      alert('Debes ingresar un motivo para el rechazo.');
+      this.mostrarMensajeTemporalmente('Debes ingresar un motivo para el rechazo.');
       return;
     }
 
@@ -210,12 +223,12 @@ export class CursosAdminComponent implements OnInit {
 
     this.administradorService.rechazarCurso(requestBody).subscribe(
       (response) => {
-        alert(response.mensaje);
+        this.mostrarMensajeTemporalmente(response.mensaje || 'Curso rechazado correctamente');
         this.cerrarModal();
         this.obtenerSolicitudesCursos();
       },
       (error) => {
-        alert('Error al rechazar el curso');
+        this.mostrarMensajeTemporalmente('Error al rechazar el curso. Por favor, inténtelo de nuevo.');
         console.error(error);
       }
     );

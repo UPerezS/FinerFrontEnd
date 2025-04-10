@@ -61,6 +61,11 @@
     </div>
   </div>
 
+  <!-- Mensaje de éxito -->
+  <div *ngIf="mostrarMensaje" class="mensaje-exito">
+    {{ mensajeExito }}
+  </div>
+
   <!-- Sección 2: Todos los Cursos -->
   <section class="section">
     <h2>Todos los cursos</h2>
