@@ -30,6 +30,8 @@ import { ContenidoCursoComponent } from './components/alumnos/contenido-curso/co
 import { NavbarInstructorComponent } from './components/instructores/navbar-instructor/navbar-instructor.component';
 import { PerfilInstructorComponent } from './components/instructores/perfil-instructor/perfil-instructor.component';
 import { LoginComponent } from './components/login/login/login.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -65,7 +67,9 @@ import { LoginComponent } from './components/login/login/login.component';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [
 

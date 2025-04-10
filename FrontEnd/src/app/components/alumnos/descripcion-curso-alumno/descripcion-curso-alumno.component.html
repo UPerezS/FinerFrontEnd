@@ -1,29 +1,36 @@
 <app-navbar-alumno></app-navbar-alumno>
 
 <div class="course-page">
+  <!-- Agregar FontAwesome a tu archivo index.html dentro de la etiqueta <head> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <div class="container" *ngFor="let curso of cursos">
-    <!-- Cabecera con navegación y acción principal -->
     <header class="course-header">
       <div class="header-left">
-        <a href="/cursos-alumnos" class="back-button">
+        <!-- Icono de flecha hacia la izquierda sin texto -->
+        <a [routerLink]="'/alumnos/cursos'">
           <i class="fa-solid fa-arrow-left"></i>
-          <span>Regresar</span>
         </a>
       </div>
+
       <h1 class="course-title">{{ curso.titulo }}</h1>
       <div class="header-right">
-        <!-- Dentro del *ngFor="let curso of cursos" -->
-<button class="enroll-btn" (click)="inscribirse(curso)">
-  <i class="fa-solid fa-user-plus"></i>
-  <span>Inscribirme</span>
-</button>
+        <!-- Mostrar botón "Inscribirme" si el alumno no está inscrito -->
+        <button *ngIf="!estaInscrito(curso)" class="enroll-btn" (click)="inscribirse(curso)">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Inscribirme</span>
+        </button>
+
+        <!-- Mostrar botón "Acceder al contenido" si el alumno está inscrito -->
+        <button *ngIf="estaInscrito(curso)" class="enroll-btn" (click)="accederCurso(curso)">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>Acceder al contenido</span>
+        </button>
 
       </div>
     </header>
 
-    <!-- Contenido principal del curso -->
     <main class="course-content">
-      <!-- Imagen a la izquierda en desktop, arriba en móvil -->
       <div class="course-image-container">
         <img [src]="curso.imagen" alt="Imagen del curso: {{ curso.titulo }}" class="course-image">
         <div class="course-tags">
@@ -32,7 +39,6 @@
         </div>
       </div>
 
-      <!-- Información a la derecha en desktop, abajo en móvil -->
       <div class="course-info">
         <div class="course-description">
           <h2>Descripción del curso</h2>
@@ -60,16 +66,6 @@
               <span>{{ curso.categoria }}</span>
             </div>
           </div>
-        </div>
-
-        <!-- Sección de inscripción móvil (se muestra sólo en móvil) -->
-        <div class="mobile-enroll-section">
-         <!-- Dentro del *ngFor="let curso of cursos" -->
-<button class="enroll-btn" (click)="inscribirse(curso)">
-  <i class="fa-solid fa-user-plus"></i>
-  <span>Inscribirme</span>
-</button>
-
         </div>
       </div>
     </main>

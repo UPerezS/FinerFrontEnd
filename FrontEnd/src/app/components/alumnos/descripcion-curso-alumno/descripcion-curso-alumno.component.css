@@ -37,6 +37,13 @@ body {
   display: flex;
   justify-content: flex-end;
 }
+/* Estilo para el icono */
+/* Estilo para el icono */
+.course-header .header-left a i {
+  font-size: 24px;    /* Tamaño del icono */
+  color: #000;        /* Color del icono */
+}
+
 
 .course-title {
   flex: 2;
@@ -296,4 +303,14 @@ body {
     font-size: 1.2rem;
     margin: 0;
   }
+  .snackbar-success {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .snackbar-error {
+    background-color: #f44336;
+    color: white;
+  }
+
 }

@@ -40,8 +40,8 @@ export class AlumnoService {
         return throwError(() => error);
       })
     );
-  } 
-  
+  }
+
   descargarCertificado(idInscripcion: number): Observable<Blob> {
     const url = `${this.apiCursosUrl}/certificado/${idInscripcion}`;
     return this.http.get(url, {
@@ -83,7 +83,7 @@ export class AlumnoService {
       .set('contrasenia', contrasenia || '') // Envía cadena vacía si es null/undefined
       .set('nombreUsuario', nombreUsuario)
       .set('actualizar_contrasenia', contrasenia ? 'true' : 'false'); // Añade este parámetro
-  
+
     return this.http.put(`${this.apiUrl}/editar-cuenta`, null, {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded' // Cambiado a x-www-form-urlencoded
@@ -97,8 +97,8 @@ export class AlumnoService {
       }),
       catchError(error => {
         console.error('Error completo:', error);
-        const errorMsg = error.error?.message || 
-                        error.message || 
+        const errorMsg = error.error?.message ||
+                        error.message ||
                         'Error al actualizar el perfil';
         Swal.fire('Error', errorMsg, 'error');
         throw error;
@@ -106,7 +106,7 @@ export class AlumnoService {
     );
   }
 
-  
+
   /**
    * Actualiza solo la contraseña del alumno
    * @param email Correo electrónico del alumno
@@ -161,9 +161,9 @@ export class AlumnoService {
       })
     );
   }
-  
 
-  
+
+
   /**
    * Inscribirse a un curso
    */
@@ -218,5 +218,5 @@ export class AlumnoService {
       })
     );
   }
-  
+
 }
